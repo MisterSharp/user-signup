@@ -14,6 +14,7 @@ def blank(s):
 
 def check_list(lst):
     for i in lst:
-        if i == True:
+        if i:
             return False
     return True
+

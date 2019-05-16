@@ -29,37 +29,35 @@ def index():
         #is Username blank?
         a = bool(" " in request.form['Username'])
         if a:
-            username_error += "Spaces are not allowed in username."
+            username_error += "Invalid Username"
         #is it between 3 & 20 characters?
         b = len_check(request.form['Username'])
         if b:
-            username_error += "Username must be between 3-20 characters"
+            username_error += "Invalid Username"
         #is password blank?
         c = bool(" " in request.form['Password'])
         if c:
-            password_error += "Spaces are not allowed in the password"
+            password_error += "Invalid Password"
         #is it between 3 & 20 characters?
         d = len_check(request.form['Password'])
         if d:
-            password_error += "Password must be between 3-20 characters"
+            password_error += "Invalid Password"
         #do passwords match?
         e = bool(request.form['Verify'] != request.form['Password'])
         if e:
             verify_error += "Passwords do not match"
         #if the Email field is not blank
-        f = bool(not not_blank(request.form['Email'])
+        f = bool(not_blank(request.form['Email']))
+        g = bool(not validators.email(request.form['Email']))
+        checks = [a,b,c,d,e]
+        #if email is not blank
         if f:
-            #check to make sure its a valid e-mail
-            if not validators.email(request.form['Email']):
-                email_error = 'Enter a valid e-mail or leave blank'
+            #if email is invalid, assign email error
+            if g:
+                email_error += "Enter valid email or leave blank"
+        if check_list(checks):
+            return render_template('welcome.html', user=username)
 
     return render_template('sign-up.html', username_error=username_error, password_error=password_error, verify_error=verify_error, email_error=email_error, username=username, email=email, password=password, verify=verify)
-
-@app.route("/welcome")
-def valid():
-    user = request.form['Username']
-    return render_template('welcome.html', user=user)
-
-
 
 app.run()
