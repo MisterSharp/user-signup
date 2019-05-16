@@ -46,10 +46,9 @@ def index():
         e = bool(request.form['Verify'] != request.form['Password'])
         if e:
             verify_error += "Passwords do not match"
-        
-        
         #if the Email field is not blank
-        if not_blank(request.form['Email']) == True:
+        f = bool(not not_blank(request.form['Email'])
+        if f:
             #check to make sure its a valid e-mail
             if not validators.email(request.form['Email']):
                 email_error = 'Enter a valid e-mail or leave blank'
