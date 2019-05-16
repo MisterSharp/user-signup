@@ -1,4 +1,5 @@
 from flask import Flask, request, redirect, render_template
+from helpers import len_check, blank, not_blank, check_list
 import cgi
 import os
 import validators
@@ -26,19 +27,24 @@ def index():
         username = request.form['Username']
         email = request.form['Email']
         #is Username blank?
-        if " " in request.form['Username']:
+        a = bool(" " in request.form['Username'])
+        if a:
             username_error += "Spaces are not allowed in username."
         #is it between 3 & 20 characters?
-        if len(request.form['Username']) < 3 or len(request.form['Username']) > 20:
+        b = len_check(request.form['Username'])
+        if b:
             username_error += "Username must be between 3-20 characters"
         #is password blank?
-        if " " in request.form['Password']:
+        c = bool(" " in request.form['Password'])
+        if c:
             password_error += "Spaces are not allowed in the password"
         #is it between 3 & 20 characters?
-        if len(request.form['Password']) < 3 or len(request.form['Password']) > 20:
+        d = len_check(request.form['Password'])
+        if d:
             password_error += "Password must be between 3-20 characters"
         #do passwords match?
-        if request.form['Verify'] != request.form['Password']:
+        e = bool(request.form['Verify'] != request.form['Password'])
+        if e:
             verify_error += "Passwords do not match"
         
         
